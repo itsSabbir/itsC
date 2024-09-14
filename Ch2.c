@@ -14,33 +14,53 @@
 #include <stdbool.h>
 #include <limits.h>
 #include <math.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-// 1. Overview of the Topic
-/**
- * Operators and expressions are fundamental building blocks in C programming.
- * They allow manipulation of data, perform calculations, make decisions, and control program flow.
- *
- * Purpose:
- * - Perform mathematical and logical operations
- * - Manipulate data at bit level
- * - Assign values to variables
- * - Compare values and make decisions
- *
- * Significance:
- * - Essential for implementing algorithms and logic
- * - Critical for performance optimization
- * - Fundamental to all aspects of C programming
- *
- * Common use cases:
- * - Arithmetic calculations in scientific computing
- * - Boolean logic in decision-making structures
- * - Bitwise operations in low-level system programming
- * - Complex expressions in game development and graphics programming
- */
+// Global definitions and structures
+#define BUFFER_SIZE 8
+#define BUFFER_MASK (BUFFER_SIZE - 1)
+#define FIXED_POINT_FRACTIONAL_BITS 16
+#define FLAG_A (1 << 0)
+#define FLAG_B (1 << 1)
+#define FLAG_C (1 << 2)
+#define FLAG_D (1 << 3)
+#define ARRAY_SIZE 1000
+#define BITS_PER_ELEMENT (sizeof(unsigned int) * 8)
+#define ARRAY_BITS (ARRAY_SIZE / BITS_PER_ELEMENT)
 
-// 2. Syntax and Key Concepts
+typedef int32_t fixed_point_t;
+typedef struct { int x, y; } Point;
+typedef struct { unsigned int a : 5; unsigned int b : 3; unsigned int c : 1; } PackedData;
+typedef struct { uint32_t state; } LCG;
 
 int main() {
+    // 1. Overview of the Topic
+    /**
+     * Operators and expressions are fundamental building blocks in C programming.
+     * They allow manipulation of data, perform calculations, make decisions, and control program flow.
+     *
+     * Purpose:
+     * - Perform mathematical and logical operations
+     * - Manipulate data at bit level
+     * - Assign values to variables
+     * - Compare values and make decisions
+     *
+     * Significance:
+     * - Essential for implementing algorithms and logic
+     * - Critical for performance optimization
+     * - Fundamental to all aspects of C programming
+     *
+     * Common use cases:
+     * - Arithmetic calculations in scientific computing
+     * - Boolean logic in decision-making structures
+     * - Bitwise operations in low-level system programming
+     * - Complex expressions in game development and graphics programming
+     */
+
+    // 2. Syntax and Key Concepts
+
     // 2.1 Arithmetic Operators
     int a = 10, b = 3;
     int sum = a + b;        // Addition
@@ -86,6 +106,7 @@ int main() {
     c >>= 2; // Equivalent to: c = c >> 2
     
     // 2.5 Operator Precedence (from highest to lowest)
+    int d = 5, e = 2, f = 3;
     int result = (a + b) * c - (d / e) % f;
     // Parentheses () have the highest precedence
     // Then *, /, %
@@ -185,9 +206,6 @@ int main() {
     }
     
     // Advanced: Implement a circular buffer using bitwise operations
-    #define BUFFER_SIZE 8  // Must be a power of 2
-    #define BUFFER_MASK (BUFFER_SIZE - 1)
-    
     int buffer[BUFFER_SIZE];
     int write_index = 0;
     int read_index = 0;
@@ -211,7 +229,7 @@ int main() {
     
     int (*operation)(int, int);
     operation = (a > b) ? add : subtract;
-    int result = operation(a, b);
+    int func_result = operation(a, b);
     
     // 7.2 Preprocessor: Macro operators
     #define MAX(a, b) ((a) > (b) ? (a) : (b))
@@ -228,41 +246,240 @@ int main() {
     int* p = arr;
     int third_element = *(p + 2);  // Equivalent to arr[2]
     
+    // Additional advanced examples and concepts
+
+    // Example: Implementing a simple fixed-point arithmetic system
+    fixed_point_t float_to_fixed(float f) {
+        return (fixed_point_t)(f * (1 << FIXED_POINT_FRACTIONAL_BITS));
+    }
+
+    float fixed_to_float(fixed_point_t f) {
+        return (float)f / (1 << FIXED_POINT_FRACTIONAL_BITS);
+    }
+
+    fixed_point_t fixed_multiply(fixed_point_t a, fixed_point_t b) {
+        return (fixed_point_t)(((int64_t)a * b) >> FIXED_POINT_FRACTIONAL_BITS);
+    }
+
+    // Example: Using compound literals and designated initializers
+    void print_point(Point p) {
+        printf("(%d, %d)\n", p.x, p.y);
+    }
+
+    // Example: Bit manipulation for efficient data packing
+    {
+        PackedData data = {.a = 16, .b = 5, .c = 1};
+        printf("Packed data: a = %u, b = %u, c = %u\n", data.a, data.b, data.c);
+        
+        // Manipulating bit fields
+        data.a |= 1;  // Set the least significant bit of a
+        data.b &= ~2; // Clear the second bit of b
+        data.c ^= 1;  // Toggle c
+
+        printf("Modified packed data: a = %u, b = %u, c = %u\n", data.a, data.b, data.c);
+
+        // Accessing the entire packed structure as an integer
+        unsigned int* raw_data = (unsigned int*)&data;
+        printf("Raw data: 0x%08X\n", *raw_data);
+    }
+
+    // Example: Using bitwise operators for flag manipulation
+    {
+        unsigned int flags = 0;
+
+        // Setting flags
+        flags |= FLAG_A | FLAG_C;
+        printf("Flags after setting A and C: 0x%X\n", flags);
+
+        // Checking flags
+        if (flags & FLAG_B) {
+            printf("Flag B is set\n");
+        } else {
+            printf("Flag B is not set\n");
+        }
+
+        // Clearing a flag
+        flags &= ~FLAG_C;
+        printf("Flags after clearing C: 0x%X\n", flags);
+
+        // Toggling a flag
+        flags ^= FLAG_D;
+        printf("Flags after toggling D: 0x%X\n", flags);
+    }
+
+    // Example: Implementing a circular shift operation
+    unsigned int circular_left_shift(unsigned int value, int shift) {
+        const int bits = sizeof(unsigned int) * 8;
+        shift %= bits;
+        return (value << shift) | (value >> (bits - shift));
+    }
+
+    unsigned int circular_right_shift(unsigned int value, int shift) {
+        const int bits = sizeof(unsigned int) * 8;
+        shift %= bits;
+        return (value >> shift) | (value << (bits - shift));
+    }
+
+    // Example: Using bitwise operations for efficient modulo with powers of 2
+    unsigned int fast_modulo_power_of_two(unsigned int value, unsigned int divisor) {
+        // Note: divisor must be a power of 2
+        return value & (divisor - 1);
+    }
+
+    // Example: Implementing a simple hash function using bitwise operations
+    unsigned int simple_hash(const char* str) {
+        unsigned int hash = 0;
+        while (*str) {
+            hash = (hash << 5) + hash + *str;
+            str++;
+        }
+        return hash;
+    }
+
+    // Example: Using the comma operator for complex expressions
+    {
+        int a = 1, b = 2, c = 3;
+        int result = (a++, b += 2, c *= 3);
+        printf("a = %d, b = %d, c = %d, result = %d\n", a, b, c, result);
+    }
+
+    // Example: Implementing a simple linear congruential generator using bitwise operations
+    uint32_t lcg_next(LCG* lcg) {
+        lcg->state = (uint32_t)(((uint64_t)lcg->state * 1103515245 + 12345) & 0xFFFFFFFF);
+        return lcg->state >> 16;
+    }
+
+    // Example: Using compound assignment operators with function calls
+    int increment(int* value) {
+        return ++(*value);
+    }
+
+    {
+        int x = 5;
+        x += increment(&x);
+        printf("x after compound assignment: %d\n", x);
+    }
+
+    // Example: Demonstrating sequence points and undefined behavior
+    {
+        int i = 5;
+        int j = i++ + i++;  // Undefined behavior
+
+        int k = 5;
+        int l = (k++) + (k++);  // Well-defined behavior due to sequence point
+
+        printf("i = %d, j = %d\n", i, j);
+        printf("k = %d, l = %d\n", k, l);
+    }
+
+    // Example: Using bitwise operations for efficient array operations
+    unsigned int bit_array[ARRAY_BITS] = {0};
+
+    void set_bit(int index) {
+        bit_array[index / BITS_PER_ELEMENT] |= (1U << (index % BITS_PER_ELEMENT));
+    }
+
+    void clear_bit(int index) {
+        bit_array[index / BITS_PER_ELEMENT] &= ~(1U << (index % BITS_PER_ELEMENT));
+    }
+
+    int test_bit(int index) {
+        return (bit_array[index / BITS_PER_ELEMENT] & (1U << (index % BITS_PER_ELEMENT))) != 0;
+    }
+
+    // Example: Using the ternary operator for conditional initialization
+    void ternary_operator_example(int condition) {
+        int result = condition ? (condition > 0 ? 1 : -1) : 0;
+        printf("Ternary operator result: %d\n", result);
+    }
+
+    // Demonstrating the use of all examples
+    printf("\n--- Demonstrating all examples ---\n");
+
+    // Fixed-point arithmetic
+    fixed_point_t fixed_val = float_to_fixed(3.14f);
+    printf("Fixed-point value: %d\n", fixed_val);
+    printf("Converted back to float: %f\n", fixed_to_float(fixed_val));
+
+    // Compound literals and designated initializers
+    print_point((Point){.x = 5, .y = 10});
+
+    // Circular shift operations
+    unsigned int value = 0xABCD1234;
+    printf("Original value: 0x%08X\n", value);
+    printf("Circular left shift by 8: 0x%08X\n", circular_left_shift(value, 8));
+    printf("Circular right shift by 8: 0x%08X\n", circular_right_shift(value, 8));
+
+    // Fast modulo with power of 2
+    printf("Fast modulo 16 of 100: %u\n", fast_modulo_power_of_two(100, 16));
+
+    // Simple hash function
+    printf("Hash of 'Hello': %u\n", simple_hash("Hello"));
+
+    // Linear Congruential Generator
+    LCG lcg = {.state = 12345};
+    printf("Random number from LCG: %u\n", lcg_next(&lcg));
+
+    // Bit array operations
+    set_bit(42);
+    printf("Bit 42 is set: %s\n", test_bit(42) ? "true" : "false");
+    clear_bit(42);
+    printf("Bit 42 after clearing: %s\n", test_bit(42) ? "true" : "false");
+
+    // Ternary operator example
+    ternary_operator_example(10);
+    ternary_operator_example(-5);
+    ternary_operator_example(0);
+
     // 8. FAQs & Troubleshooting
+    printf("\n--- FAQs & Troubleshooting ---\n");
     
     // Q: Why does (1/2) * 5 give 0 instead of 2.5?
+    printf("(1/2) * 5 = %d\n", (1/2) * 5);
+    printf("(1.0/2) * 5 = %f\n", (1.0/2) * 5);
     // A: Integer division truncates. Use (1.0/2) * 5 for floating-point division.
     
     // Q: How can I check if a number is odd or even without using the modulus operator?
+    int number_to_check = 42;
+    printf("%d is %s\n", number_to_check, (number_to_check & 1) ? "odd" : "even");
     // A: Use bitwise AND: if (number & 1) { /* odd */ } else { /* even */ }
     
     // Q: How do I set, clear, or toggle a specific bit in an integer?
-    // A: Set: num |= (1 << bit_position)
-    //    Clear: num &= ~(1 << bit_position)
-    //    Toggle: num ^= (1 << bit_position)
+    unsigned int num = 0;
+    printf("Initial num: 0x%08X\n", num);
+    num |= (1 << 3);  // Set bit 3
+    printf("After setting bit 3: 0x%08X\n", num);
+    num &= ~(1 << 3);  // Clear bit 3
+    printf("After clearing bit 3: 0x%08X\n", num);
+    num ^= (1 << 3);  // Toggle bit 3
+    printf("After toggling bit 3: 0x%08X\n", num);
     
     // Q: Why does my bitwise operation on a signed integer produce unexpected results?
+    int signed_num = -1;
+    unsigned int unsigned_num = (unsigned int)signed_num;
+    printf("Signed -1 right shift by 1: %d\n", signed_num >> 1);
+    printf("Unsigned -1 right shift by 1: %u\n", unsigned_num >> 1);
     // A: Signed integers use two's complement representation. For portable code,
     //    use unsigned integers for bitwise operations.
-    
+
     // 9. Recommended Tools & Libraries
+    printf("\n--- Recommended Tools & Libraries ---\n");
+    printf("Static Analysis Tools:\n");
+    printf("- Clang Static Analyzer: Detects bugs in expressions\n");
+    printf("- Cppcheck: Checks for undefined behavior in expressions\n");
     
-    // 9.1 Static Analysis Tools
-    // - Clang Static Analyzer: Detects bugs in expressions
-    // - Cppcheck: Checks for undefined behavior in expressions
+    printf("\nDebugging Tools:\n");
+    printf("- GDB (GNU Debugger): Evaluate expressions during runtime\n");
+    printf("- Valgrind: Detect memory errors in expressions\n");
     
-    // 9.2 Debugging Tools
-    // - GDB (GNU Debugger): Evaluate expressions during runtime
-    // - Valgrind: Detect memory errors in expressions
+    printf("\nLibraries:\n");
+    printf("- GMP (GNU Multiple Precision Arithmetic Library): For arbitrary-precision arithmetic\n");
+    printf("- Boost.Operators: Simplifies operator overloading in C++\n");
     
-    // 9.3 Libraries
-    // - GMP (GNU Multiple Precision Arithmetic Library): For arbitrary-precision arithmetic
-    // - Boost.Operators: Simplifies operator overloading in C++
-    
-    // 9.4 Compiler Flags
-    // -Wall -Wextra: Enable additional warnings for potentially problematic expressions
-    // -fwrapv: Define signed integer overflow to wrap (GCC)
-    
+    printf("\nCompiler Flags:\n");
+    printf("-Wall -Wextra: Enable additional warnings for potentially problematic expressions\n");
+    printf("-fwrapv: Define signed integer overflow to wrap (GCC)\n");
+
     return 0;
 }
 
@@ -285,227 +502,9 @@ int main() {
  * 15. ,                    Left-to-right
  */
 
-// Additional advanced examples and concepts
-
-// Example: Implementing a simple fixed-point arithmetic system
-typedef int32_t fixed_point_t;
-#define FIXED_POINT_FRACTIONAL_BITS 16
-
-fixed_point_t float_to_fixed(float f) {
-    return (fixed_point_t)(f * (1 << FIXED_POINT_FRACTIONAL_BITS));
-}
-
-float fixed_to_float(fixed_point_t f) {
-    return (float)f / (1 << FIXED_POINT_FRACTIONAL_BITS);
-}
-
-fixed_point_t fixed_multiply(fixed_point_t a, fixed_point_t b) {
-    return (fixed_point_t)(((int64_t)a * b) >> FIXED_POINT_FRACTIONAL_BITS);
-}
-
-// Example: Using compound literals and designated initializers
-struct Point { int x, y; };
-
-void print_point(struct Point p) {
-    printf("(%d, %d)\n", p.x, p.y);
-}
-
-void example_compound_literals() {
-    print_point((struct Point){.x = 5, .y = 10});
-}
-
-// Example: Using _Generic for type-generic programming (C11)
-#define abs(x) _Generic((x), \
-    int: abs, \
-    long: labs, \
-    long long: llabs, \
-    float: fabsf, \
-    double: fabs, \
-    long double: fabsl \
-)(x)
-
-// Example: Bit manipulation for efficient data packing
-typedef struct {
-    unsigned int a : 5;  // 5 bits for a (0-31)
-    unsigned int b : 3;  // 3 bits for b (0-7)
-    unsigned int c : 1;  // 1 bit for c (0-1)
-} PackedData;
-
-// ... (previous code remains the same)
-
-void example_bit_fields() {
-    PackedData data = {.a = 16, .b = 5, .c = 1};
-    printf("Packed data: a = %u, b = %u, c = %u\n", data.a, data.b, data.c);
-    
-    // Manipulating bit fields
-    data.a |= 1;  // Set the least significant bit of a
-    data.b &= ~2; // Clear the second bit of b
-    data.c ^= 1;  // Toggle c
-
-    printf("Modified packed data: a = %u, b = %u, c = %u\n", data.a, data.b, data.c);
-
-    // Accessing the entire packed structure as an integer
-    unsigned int* raw_data = (unsigned int*)&data;
-    printf("Raw data: 0x%08X\n", *raw_data);
-}
-
-// Example: Using bitwise operators for flag manipulation
-#define FLAG_A (1 << 0)
-#define FLAG_B (1 << 1)
-#define FLAG_C (1 << 2)
-#define FLAG_D (1 << 3)
-
-void flag_manipulation() {
-    unsigned int flags = 0;
-
-    // Setting flags
-    flags |= FLAG_A | FLAG_C;
-    printf("Flags after setting A and C: 0x%X\n", flags);
-
-    // Checking flags
-    if (flags & FLAG_B) {
-        printf("Flag B is set\n");
-    } else {
-        printf("Flag B is not set\n");
-    }
-
-    // Clearing a flag
-    flags &= ~FLAG_C;
-    printf("Flags after clearing C: 0x%X\n", flags);
-
-    // Toggling a flag
-    flags ^= FLAG_D;
-    printf("Flags after toggling D: 0x%X\n", flags);
-}
-
-// Example: Implementing a circular shift operation
-unsigned int circular_left_shift(unsigned int value, int shift) {
-    const int bits = sizeof(unsigned int) * 8;
-    shift %= bits;
-    return (value << shift) | (value >> (bits - shift));
-}
-
-unsigned int circular_right_shift(unsigned int value, int shift) {
-    const int bits = sizeof(unsigned int) * 8;
-    shift %= bits;
-    return (value >> shift) | (value << (bits - shift));
-}
-
-// Example: Using bitwise operations for efficient modulo with powers of 2
-unsigned int fast_modulo_power_of_two(unsigned int value, unsigned int divisor) {
-    // Note: divisor must be a power of 2
-    return value & (divisor - 1);
-}
-
-// Example: Implementing a simple hash function using bitwise operations
-unsigned int simple_hash(const char* str) {
-    unsigned int hash = 0;
-    while (*str) {
-        hash = (hash << 5) + hash + *str;
-        str++;
-    }
-    return hash;
-}
-
-// Example: Using the comma operator for complex expressions
-void comma_operator_example() {
-    int a = 1, b = 2, c = 3;
-    int result = (a++, b += 2, c *= 3);
-    printf("a = %d, b = %d, c = %d, result = %d\n", a, b, c, result);
-}
-
-// Example: Implementing a simple linear congruential generator using bitwise operations
-typedef struct {
-    uint32_t state;
-} LCG;
-
-uint32_t lcg_next(LCG* lcg) {
-    lcg->state = (uint32_t)(((uint64_t)lcg->state * 1103515245 + 12345) & 0xFFFFFFFF);
-    return lcg->state >> 16;
-}
-
-// Example: Using compound assignment operators with function calls
-int increment(int* value) {
-    return ++(*value);
-}
-
-void compound_assignment_with_functions() {
-    int x = 5;
-    x += increment(&x);
-    printf("x after compound assignment: %d\n", x);
-}
-
-// Example: Demonstrating sequence points and undefined behavior
-void sequence_points_example() {
-    int i = 5;
-    int j = i++ + i++;  // Undefined behavior
-
-    int k = 5;
-    int l = (k++) + (k++);  // Well-defined behavior due to sequence point
-
-    printf("i = %d, j = %d\n", i, j);
-    printf("k = %d, l = %d\n", k, l);
-}
-
-// Example: Using bitwise operations for efficient array operations
-#define ARRAY_SIZE 1000
-#define BITS_PER_ELEMENT (sizeof(unsigned int) * 8)
-#define ARRAY_BITS (ARRAY_SIZE / BITS_PER_ELEMENT)
-
-unsigned int bit_array[ARRAY_BITS];
-
-void set_bit(int index) {
-    bit_array[index / BITS_PER_ELEMENT] |= (1U << (index % BITS_PER_ELEMENT));
-}
-
-void clear_bit(int index) {
-    bit_array[index / BITS_PER_ELEMENT] &= ~(1U << (index % BITS_PER_ELEMENT));
-}
-
-int test_bit(int index) {
-    return (bit_array[index / BITS_PER_ELEMENT] & (1U << (index % BITS_PER_ELEMENT))) != 0;
-}
-
-// Example: Using the ternary operator for conditional initialization
-void ternary_operator_example(int condition) {
-    int result = condition ? (condition > 0 ? 1 : -1) : 0;
-    printf("Result: %d\n", result);
-}
-
-int main() {
-    // ... (previous main code remains the same)
-
-    example_bit_fields();
-    flag_manipulation();
-
-    unsigned int value = 0xABCD1234;
-    printf("Circular left shift: 0x%08X\n", circular_left_shift(value, 8));
-    printf("Circular right shift: 0x%08X\n", circular_right_shift(value, 8));
-
-    printf("Fast modulo 16: %u\n", fast_modulo_power_of_two(100, 16));
-
-    printf("Hash of 'Hello': %u\n", simple_hash("Hello"));
-
-    comma_operator_example();
-
-    LCG lcg = {.state = 12345};
-    printf("Random number: %u\n", lcg_next(&lcg));
-
-    compound_assignment_with_functions();
-
-    sequence_points_example();
-
-    set_bit(42);
-    printf("Bit 42 is set: %s\n", test_bit(42) ? "true" : "false");
-
-    ternary_operator_example(10);
-
-    return 0;
-}
-
-// Additional notes on operator precedence and associativity:
-
 /**
+ * Additional notes on operator precedence and associativity:
+ *
  * Precedence rules can be overridden using parentheses. It's often a good
  * practice to use parentheses to make the intended order of operations clear,
  * even when not strictly necessary.
