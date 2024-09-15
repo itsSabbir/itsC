@@ -1,108 +1,108 @@
 # Intro to C
 
-1. Basic Syntax and Data Types
-   - Variables and constants
-   - Basic data types (int, float, double, char)
-   - Type modifiers (short, long, unsigned)
-   - Type casting
+## 1. Basic Syntax and Data Types
+- Basic data types (int, float, double, char)
+- Type casting
+- Type modifiers (short, long, unsigned)
+- Variables and constants
 
-2. Operators and Expressions
-   - Arithmetic operators
-   - Relational and logical operators
-   - Bitwise operators
-   - Assignment operators
-   - Operator precedence
+## 2. Operators and Expressions
+- Arithmetic operators
+- Assignment operators
+- Bitwise operators
+- Operator precedence
+- Relational and logical operators
 
-3. Control Structures
-   - if-else statements
-   - switch-case statements
-   - Loops (for, while, do-while)
-   - break and continue statements
+## 3. Control Structures
+- break and continue statements
+- if-else statements
+- Loops (for, while, do-while)
+- switch-case statements
 
-4. Functions
-   - Function declaration and definition
-   - Function parameters and return values
-   - Function prototypes
-   - Recursion
+## 4. Functions
+- Function declaration and definition
+- Function parameters and return values
+- Function prototypes
+- Recursion
 
-5. Arrays and Strings
-   - One-dimensional arrays
-   - Multidimensional arrays
-   - Character arrays and strings
-   - String manipulation functions
+## 5. Arrays and Strings
+- Character arrays and strings
+- Multidimensional arrays
+- One-dimensional arrays
+- String manipulation functions
 
-6. Pointers
-   - Pointer declaration and initialization
-   - Pointer arithmetic
-   - Pointers and arrays
-   - Pointers to functions
+## 6. Pointers
+- Pointer arithmetic
+- Pointer declaration and initialization
+- Pointers and arrays
+- Pointers to functions
 
-7. Memory Management
-   - Stack vs Heap
-   - Dynamic memory allocation (malloc, calloc, realloc, free)
-   - Memory leaks and how to avoid them
+## 7. Memory Management
+- Dynamic memory allocation (malloc, calloc, realloc, free)
+- Memory leaks and how to avoid them
+- Stack vs Heap
 
-8. Structures and Unions
-   - Defining and using structures
-   - Nested structures
-   - Unions
-   - Typedef
+## 8. Structures and Unions
+- Defining and using structures
+- Nested structures
+- Typedef
+- Unions
 
-9. File Handling
-   - File I/O operations
-   - Text and binary file handling
-   - Error handling in file operations
+## 9. File Handling
+- Error handling in file operations
+- File I/O operations
+- Text and binary file handling
 
-10. Preprocessor Directives
-    - #include
-    - #define and macros
-    - Conditional compilation (#ifdef, #ifndef, #endif)
+## 10. Preprocessor Directives
+- #define and macros
+- #include
+- Conditional compilation (#ifdef, #ifndef, #endif)
 
-11. Advanced Concepts
-    - Function pointers
-    - Variadic functions
-    - Command-line arguments
-    - Bit fields
+## 11. Advanced Concepts
+- Bit fields
+- Command-line arguments
+- Function pointers
+- Variadic functions
 
-12. Standard Library
-    - stdio.h
-    - stdlib.h
-    - string.h
-    - math.h
-    - time.h
+## 12. Standard Library
+- math.h
+- stdio.h
+- stdlib.h
+- string.h
+- time.h
 
-13. Data Structures in C
-    - Linked lists
-    - Stacks
-    - Queues
-    - Trees
-    - Graphs
+## 13. Data Structures in C
+- Graphs
+- Linked lists
+- Queues
+- Stacks
+- Trees
 
-14. Algorithms in C
-    - Searching algorithms
-    - Sorting algorithms
-    - Graph algorithms
+## 14. Algorithms in C
+- Graph algorithms
+- Searching algorithms
+- Sorting algorithms
 
-15. Advanced Memory Management
-    - Memory alignment
-    - Memory mapping
-    - Custom memory allocators
+## 15. Advanced Memory Management
+- Custom memory allocators
+- Memory alignment
+- Memory mapping
 
-16. Multithreading and Concurrency
-    - POSIX threads
-    - Mutexes and semaphores
-    - Race conditions and deadlocks
+## 16. Multithreading and Concurrency
+- Mutexes and semaphores
+- POSIX threads
+- Race conditions and deadlocks
 
-17. Network Programming
-    - Socket programming
-    - Client-server architecture
+## 17. Network Programming
+- Client-server architecture
+- Socket programming
 
-18. Debugging and Profiling
-    - Using debuggers (e.g., GDB)
-    - Memory debugging tools (e.g., Valgrind)
-    - Performance profiling
+## 18. Debugging and Profiling
+- Memory debugging tools (e.g., Valgrind)
+- Performance profiling
+- Using debuggers (e.g., GDB)
 
-19. Best Practices and Code Optimization
-    - Writing clean and efficient C code
-    - Optimization techniques
-    - Coding standards and style guides
+## 19. Best Practices and Code Optimization
+- Coding standards and style guides
+- Optimization techniques
+- Writing clean and efficient C code
