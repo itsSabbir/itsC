@@ -24,7 +24,7 @@ void faqs_and_troubleshooting(void);
 void recommended_tools_and_libraries(void);
 
 int main() {
-    printf("Expert-level Cheat Sheet: Basic Syntax and Data Types in C\n\n");
+    printf("Basic Syntax and Data Types in C\n\n");
 
     overview_and_syntax();
     integer_types();
