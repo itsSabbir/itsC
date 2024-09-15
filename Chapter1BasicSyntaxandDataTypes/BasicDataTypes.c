@@ -1,23 +1,19 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <limits.h>
 #include <float.h>
+#include <stdbool.h>
+#include <stdint.h>
 #include <complex.h>
-
-// Macro constants
-#define PI 3.14159265358979323846
-#define MAX_BUFFER_SIZE 1024
-
-// Global variables (use sparingly)
-int global_variable = 10;
 
 // Function prototypes
 void overview_and_syntax(void);
-void basic_data_types(void);
-void variables_and_constants(void);
+void integer_types(void);
+void floating_point_types(void);
+void character_type(void);
+void boolean_type(void);
+void fixed_width_integer_types(void);
+void complex_numbers(void);
 void type_qualifiers(void);
-void operators_and_expressions(void);
 void type_conversion(void);
 void best_practices(void);
 void common_pitfalls(void);
@@ -28,8 +24,356 @@ void faqs_and_troubleshooting(void);
 void recommended_tools_and_libraries(void);
 
 int main() {
-    printf("Expert-level Cheat Sheet: Basic Syntax, Data Types, Variables, and Constants in C\n\n");
+    printf("Expert-level Cheat Sheet: Basic Syntax and Data Types in C\n\n");
 
+    overview_and_syntax();
+    integer_types();
+    floating_point_types();
+    character_type();
+    boolean_type();
+    fixed_width_integer_types();
+    complex_numbers();
+    type_qualifiers();
+    type_conversion();
+    best_practices();
+    common_pitfalls();
+    advanced_tips();
+    real_world_use_cases();
+    integration_with_other_concepts();
+    faqs_and_troubleshooting();
+    recommended_tools_and_libraries();
+
+    return 0;
+}
+
+void overview_and_syntax() {
+    printf("1. Overview of Basic Syntax and Data Types in C\n");
+    printf("-----------------------------------------------\n");
+    printf("C is a statically-typed, compiled language known for its efficiency and low-level control.\n");
+    printf("Basic data types in C include:\n");
+    printf("- Integers (int, short, long, long long)\n");
+    printf("- Floating-point numbers (float, double, long double)\n");
+    printf("- Characters (char)\n");
+    printf("- Boolean (introduced in C99 with <stdbool.h>)\n");
+    printf("These types form the foundation for more complex data structures and algorithms.\n\n");
+
+    printf("Basic syntax for declaring variables:\n");
+    printf("type variable_name = initial_value;\n\n");
+
+    printf("Example:\n");
+    int x = 5;
+    float y = 3.14f;
+    char z = 'A';
+    printf("int x = %d;\n", x);
+    printf("float y = %f;\n", y);
+    printf("char z = '%c';\n\n", z);
+}
+
+void integer_types() {
+    printf("2. Integer Types\n");
+    printf("----------------\n");
+    printf("C provides several integer types with different sizes and ranges:\n\n");
+
+    printf("- short int (typically 16 bits)\n");
+    short s = 32767;
+    printf("  short s = %d; // Range: %d to %d\n", s, SHRT_MIN, SHRT_MAX);
+
+    printf("- int (typically 32 bits)\n");
+    int i = 2147483647;
+    printf("  int i = %d; // Range: %d to %d\n", i, INT_MIN, INT_MAX);
+
+    printf("- long int (typically 32 or 64 bits)\n");
+    long l = 9223372036854775807L;
+    printf("  long l = %ld; // Range: %ld to %ld\n", l, LONG_MIN, LONG_MAX);
+
+    printf("- long long int (at least 64 bits)\n");
+    long long ll = 9223372036854775807LL;
+    printf("  long long ll = %lld; // Range: %lld to %lld\n\n", ll, LLONG_MIN, LLONG_MAX);
+
+    printf("Unsigned variants are also available (e.g., unsigned int).\n\n");
+}
+
+void floating_point_types() {
+    printf("3. Floating-point Types\n");
+    printf("------------------------\n");
+    printf("C provides three floating-point types:\n\n");
+
+    printf("- float (typically 32 bits)\n");
+    float f = 3.14159265358979323846f;
+    printf("  float f = %.7f; // Precision: %.7f\n", f, FLT_EPSILON);
+
+    printf("- double (typically 64 bits)\n");
+    double d = 3.14159265358979323846;
+    printf("  double d = %.15f; // Precision: %.15f\n", d, DBL_EPSILON);
+
+    printf("- long double (typically 80 bits or more)\n");
+    long double ld = 3.14159265358979323846L;
+    printf("  long double ld = %.18Lf; // Precision: %.18Lf\n\n", ld, LDBL_EPSILON);
+
+    printf("Note: Actual precision may vary depending on the system and compiler.\n\n");
+}
+
+void character_type() {
+    printf("4. Character Type\n");
+    printf("------------------\n");
+    printf("The char type is used to store single characters:\n\n");
+
+    char c = 'A';
+    printf("char c = '%c';\n", c);
+    printf("ASCII value: %d\n\n", c);
+
+    printf("Character literals are enclosed in single quotes.\n");
+    printf("Multi-byte characters and strings use double quotes.\n\n");
+
+    char str[] = "Hello";
+    printf("char str[] = \"%s\";\n\n", str);
+}
+
+void boolean_type() {
+    printf("5. Boolean Type\n");
+    printf("---------------\n");
+    printf("C99 introduced a Boolean type via <stdbool.h>:\n\n");
+
+    bool flag = true;
+    printf("bool flag = %s;\n\n", flag ? "true" : "false");
+
+    printf("In older C versions, integers are used for boolean logic:\n");
+    printf("0 is considered false, any non-zero value is true.\n\n");
+}
+
+void fixed_width_integer_types() {
+    printf("6. Fixed-width Integer Types\n");
+    printf("----------------------------\n");
+    printf("C99 introduced fixed-width integer types in <stdint.h>:\n\n");
+
+    int8_t i8 = 127;
+    uint8_t ui8 = 255;
+    int16_t i16 = 32767;
+    uint16_t ui16 = 65535;
+    int32_t i32 = 2147483647;
+    uint32_t ui32 = 4294967295U;
+    int64_t i64 = 9223372036854775807LL;
+    uint64_t ui64 = 18446744073709551615ULL;
+
+    printf("int8_t i8 = %d;\n", i8);
+    printf("uint8_t ui8 = %u;\n", ui8);
+    printf("int16_t i16 = %d;\n", i16);
+    printf("uint16_t ui16 = %u;\n", ui16);
+    printf("int32_t i32 = %d;\n", i32);
+    printf("uint32_t ui32 = %u;\n", ui32);
+    printf("int64_t i64 = %lld;\n", i64);
+    printf("uint64_t ui64 = %llu;\n\n", ui64);
+
+    printf("These types ensure consistent sizes across different platforms.\n\n");
+}
+
+void complex_numbers() {
+    printf("7. Complex Numbers\n");
+    printf("------------------\n");
+    printf("C99 introduced support for complex numbers via <complex.h>:\n\n");
+
+    double complex z1 = 1.0 + 2.0 * I;
+    double complex z2 = 3.0 - 4.0 * I;
+    double complex sum = z1 + z2;
+
+    printf("z1 = %.2f + %.2fi\n", creal(z1), cimag(z1));
+    printf("z2 = %.2f + %.2fi\n", creal(z2), cimag(z2));
+    printf("sum = %.2f + %.2fi\n\n", creal(sum), cimag(sum));
+}
+
+void type_qualifiers() {
+    printf("8. Type Qualifiers\n");
+    printf("------------------\n");
+    printf("C provides type qualifiers to modify variable behavior:\n\n");
+
+    printf("- const: Value cannot be changed after initialization\n");
+    const int DAYS_IN_WEEK = 7;
+    printf("  const int DAYS_IN_WEEK = %d;\n", DAYS_IN_WEEK);
+
+    printf("- volatile: Value may change unexpectedly\n");
+    volatile int sensor_value = 0;
+    printf("  volatile int sensor_value = %d;\n", sensor_value);
+
+    printf("- restrict: Pointer is the only way to access the object it points to\n");
+    int * restrict ptr = NULL;
+    printf("  int * restrict ptr = NULL;\n\n");
+}
+
+void type_conversion() {
+    printf("9. Type Conversion\n");
+    printf("------------------\n");
+    printf("C performs implicit type conversions, but explicit casting is often preferred:\n\n");
+
+    int i = 5;
+    float f = 2.5f;
+    double d = (double)i / f;
+    printf("int i = %d;\n", i);
+    printf("float f = %.1f;\n", f);
+    printf("double d = (double)i / f; // Result: %.2f\n\n", d);
+
+    printf("Be cautious of potential data loss in conversions:\n");
+    long long big = 1234567890123LL;
+    int truncated = (int)big;
+    printf("long long big = %lld;\n", big);
+    printf("int truncated = (int)big; // Result: %d\n\n", truncated);
+}
+
+void best_practices() {
+    printf("10. Best Practices\n");
+    printf("------------------\n");
+    printf("- Use appropriate types for your data to avoid overflow and precision issues\n");
+    printf("- Initialize variables before use to prevent undefined behavior\n");
+    printf("- Use const for values that should not change\n");
+    printf("- Be explicit about integer signedness (signed vs unsigned)\n");
+    printf("- Use fixed-width types when exact sizes are required\n");
+    printf("- Be cautious with floating-point comparisons due to precision limitations\n");
+    printf("- Use meaningful variable names that indicate the purpose or content\n");
+    printf("- Declare variables in the smallest scope possible\n\n");
+}
+
+void common_pitfalls() {
+    printf("11. Common Pitfalls\n");
+    printf("-------------------\n");
+    printf("- Integer overflow/underflow\n");
+    printf("- Floating-point precision errors\n");
+    printf("- Uninitialized variables leading to undefined behavior\n");
+    printf("- Implicit type conversions causing unexpected results\n");
+    printf("- Assuming specific sizes for basic types across different platforms\n");
+    printf("- Misusing signed and unsigned integers in comparisons\n");
+    printf("- Failing to account for null-terminator in strings\n\n");
+
+    // Example of integer overflow
+    int max_int = INT_MAX;
+    printf("Integer overflow example:\n");
+    printf("INT_MAX: %d\n", max_int);
+    printf("INT_MAX + 1: %d\n\n", max_int + 1);
+}
+
+void advanced_tips() {
+    printf("12. Advanced Tips and Optimizations\n");
+    printf("-----------------------------------\n");
+    printf("- Use bit fields for compact data structures\n");
+    printf("- Leverage SIMD instructions for parallel data processing\n");
+    printf("- Consider cache-friendly data layouts for performance\n");
+    printf("- Use inline functions for small, frequently called functions\n");
+    printf("- Understand and utilize type promotion rules\n");
+    printf("- Use union for type-punning (with caution due to strict aliasing rules)\n");
+    printf("- Utilize compiler-specific attributes for fine-grained control\n\n");
+
+    // Example of a bit field
+    struct Flags {
+        unsigned int flag1 : 1;
+        unsigned int flag2 : 1;
+        unsigned int flag3 : 1;
+    } flags = {1, 0, 1};
+
+    printf("Bit field example:\n");
+    printf("sizeof(struct Flags): %zu bytes\n", sizeof(struct Flags));
+    printf("flags: %d %d %d\n\n", flags.flag1, flags.flag2, flags.flag3);
+}
+
+void real_world_use_cases() {
+    printf("13. Real-world Use Cases\n");
+    printf("--------------------------\n");
+    printf("- Embedded systems: Using fixed-width types for hardware registers\n");
+    printf("- Financial software: Using decimal types for precise calculations\n");
+    printf("- Scientific computing: Leveraging complex numbers and high-precision types\n");
+    printf("- Game development: Optimizing data types for performance and memory usage\n");
+    printf("- Network protocols: Defining packet structures with specific data types\n");
+    printf("- Operating systems: Using volatile for memory-mapped I/O\n\n");
+
+    // Example: Network packet header
+    struct PacketHeader {
+        uint16_t source_port;
+        uint16_t dest_port;
+        uint32_t sequence_number;
+        uint32_t ack_number;
+        uint16_t flags;
+    };
+
+    printf("Size of PacketHeader: %zu bytes\n\n", sizeof(struct PacketHeader));
+}
+
+void integration_with_other_concepts() {
+    printf("14. Integration with Other Concepts\n");
+    printf("-----------------------------------\n");
+    printf("- Data structures: Building blocks for complex data types\n");
+    printf("- Memory management: Understanding data sizes for proper allocation\n");
+    printf("- Concurrency: Atomic types for thread-safe operations\n");
+    printf("- I/O operations: Proper type usage for file and network I/O\n");
+    printf("- API design: Choosing appropriate types for function parameters and return values\n");
+    printf("- Serialization: Mapping data types to standardized formats\n\n");
+
+    // Example: Atomic operation
+    #include <stdatomic.h>
+    atomic_int shared_counter = ATOMIC_VAR_INIT(0);
+    atomic_fetch_add(&shared_counter, 1);
+    printf("Atomic counter value: %d\n\n", atomic_load(&shared_counter));
+}
+
+void faqs_and_troubleshooting() {
+    printf("15. FAQs and Troubleshooting\n");
+    printf("----------------------------\n");
+    printf("Q: Why does my floating-point comparison fail?\n");
+    printf("A: Use an epsilon value for approximate equality: if (fabs(a - b) < EPSILON)\n\n");
+
+    printf("Q: How can I determine the size of a type on my system?\n");
+    printf("A: Use the sizeof operator: printf(\"Size of int: %%zu bytes\\n\", sizeof(int));\n\n");
+
+    printf("Q: What's the difference between size_t and int?\n");
+    printf("A: size_t is unsigned and guaranteed to hold the size of the largest object. Use it for sizes and indices.\n\n");
+
+    printf("Q: What's the difference between size_t and int?\n");
+    printf("A: size_t is unsigned and guaranteed to hold the size of the largest object. Use it for sizes and indices.\n\n");
+
+    printf("Q: How do I handle platform-dependent integer sizes?\n");
+    printf("A: Use fixed-width types from <stdint.h> or use the intmax_t and uintmax_t types for maximum portability.\n\n");
+
+    printf("Q: Why am I getting unexpected results with char arithmetic?\n");
+    printf("A: char can be signed or unsigned depending on the implementation. Use explicit signed char or unsigned char for consistency.\n\n");
+
+    printf("Q: How can I represent boolean values in older C standards?\n");
+    printf("A: Define macros or an enum: enum { FALSE = 0, TRUE = 1 };\n\n");
+
+    printf("Q: What's the best way to initialize a large array?\n");
+    printf("A: Use compound literals or designated initializers for partial initialization: int arr[1000] = {[0 ... 99] = 1};\n\n");
+}
+
+void recommended_tools_and_libraries() {
+    printf("16. Recommended Tools and Libraries\n");
+    printf("------------------------------------\n");
+    printf("- Static Analysis Tools:\n");
+    printf("  * Clang Static Analyzer: Detects bugs and quality issues in C code\n");
+    printf("  * Cppcheck: Detects various types of bugs and suggests improvements\n\n");
+
+    printf("- Debugging and Profiling Tools:\n");
+    printf("  * Valgrind: Memory debugging, memory leak detection, and profiling\n");
+    printf("  * GDB (GNU Debugger): Powerful debugger for inspecting program state\n\n");
+
+    printf("- Libraries for Extended Functionality:\n");
+    printf("  * GMP (GNU Multiple Precision Arithmetic Library): For arbitrary-precision arithmetic\n");
+    printf("  * decimal.h (from IBM): For decimal floating-point arithmetic\n");
+    printf("  * fenv.h: For controlling floating-point environment\n\n");
+
+    printf("- Build Systems and Package Managers:\n");
+    printf("  * CMake: Cross-platform build system\n");
+    printf("  * Conan: C/C++ package manager\n\n");
+
+    printf("- Code Formatting and Style Checking:\n");
+    printf("  * clang-format: Code formatter for maintaining consistent style\n");
+    printf("  * vera++: Static analysis tool for enforcing coding standards\n\n");
+
+    printf("- Documentation Generation:\n");
+    printf("  * Doxygen: Generate documentation from source code comments\n\n");
+
+    printf("- Unit Testing Frameworks:\n");
+    printf("  * Unity: Simple unit testing framework for C\n");
+    printf("  * Check: Unit testing framework for C with support for fork-based tests\n\n");
+}
+
+// Add this to the main function
+int main() {
+    
     overview_and_syntax();
     basic_data_types();
     variables_and_constants();
@@ -46,310 +390,3 @@ int main() {
 
     return 0;
 }
-
-void overview_and_syntax() {
-    printf("1. Overview and Basic Syntax\n");
-    printf("----------------------------\n");
-    printf("C is a general-purpose, procedural programming language known for its efficiency and low-level control.\n");
-    printf("Key features of C syntax:\n");
-    printf("- Case-sensitive\n");
-    printf("- Statements end with semicolons ';'\n");
-    printf("- Blocks of code are enclosed in curly braces '{}'\n");
-    printf("- Comments: // for single-line, /* */ for multi-line\n");
-    printf("- Functions are the basic building blocks of C programs\n\n");
-
-    // Basic syntax example
-    int x = 5;
-    if (x > 0) {
-        printf("This is a basic syntax example.\n");
-        /* This is a multi-line comment
-           demonstrating block structure */
-    }
-    printf("\n");
-}
-
-void basic_data_types() {
-    printf("2. Basic Data Types\n");
-    printf("-------------------\n");
-
-    // Integer types
-    printf("Integer types:\n");
-    printf("char: %zu bytes, range: %d to %d\n", sizeof(char), CHAR_MIN, CHAR_MAX);
-    printf("short: %zu bytes, range: %d to %d\n", sizeof(short), SHRT_MIN, SHRT_MAX);
-    printf("int: %zu bytes, range: %d to %d\n", sizeof(int), INT_MIN, INT_MAX);
-    printf("long: %zu bytes, range: %ld to %ld\n", sizeof(long), LONG_MIN, LONG_MAX);
-    printf("long long: %zu bytes, range: %lld to %lld\n", sizeof(long long), LLONG_MIN, LLONG_MAX);
-
-    // Floating-point types
-    printf("\nFloating-point types:\n");
-    printf("float: %zu bytes, range: %e to %e\n", sizeof(float), FLT_MIN, FLT_MAX);
-    printf("double: %zu bytes, range: %e to %e\n", sizeof(double), DBL_MIN, DBL_MAX);
-    printf("long double: %zu bytes, range: %Le to %Le\n", sizeof(long double), LDBL_MIN, LDBL_MAX);
-
-    // Other types
-    printf("\nOther types:\n");
-    printf("_Bool: %zu byte(s)\n", sizeof(_Bool));
-    printf("size_t: %zu bytes (unsigned integer type)\n", sizeof(size_t));
-    printf("void: incomplete type, used in function returns and generic pointers\n");
-
-    // Complex types (C99 and later)
-    printf("\nComplex types (C99+):\n");
-    printf("float _Complex: %zu bytes\n", sizeof(float _Complex));
-    printf("double _Complex: %zu bytes\n", sizeof(double _Complex));
-    printf("long double _Complex: %zu bytes\n", sizeof(long double _Complex));
-
-    printf("\n");
-}
-
-void variables_and_constants() {
-    printf("3. Variables and Constants\n");
-    printf("---------------------------\n");
-
-    // Variable declaration and initialization
-    int a;          // Declaration
-    int b = 5;      // Declaration with initialization
-    a = 10;         // Assignment
-
-    // Constants
-    const int MAX_VALUE = 100;  // Compile-time constant
-    enum Days {MON, TUE, WED, THU, FRI, SAT, SUN};  // Enumeration constant
-
-    // Storage classes
-    auto int x = 10;        // Default for local variables (keyword often omitted)
-    register int y = 20;    // Hint for compiler to use CPU register (may be ignored)
-    static int count = 0;   // Retains value between function calls
-
-    // Demonstrate variable scope
-    {
-        int local_var = 30;  // Block-scoped variable
-        printf("local_var: %d\n", local_var);
-    }
-    // printf("local_var: %d\n", local_var);  // This would cause a compilation error
-
-    printf("Global variable: %d\n", global_variable);
-    printf("Constant: %d\n", MAX_VALUE);
-    printf("Enumeration constant: %d\n", WED);
-
-    printf("\n");
-}
-
-void type_qualifiers() {
-    printf("4. Type Qualifiers\n");
-    printf("------------------\n");
-
-    // const: value cannot be changed after initialization
-    const int FIXED_VALUE = 100;
-    // FIXED_VALUE = 200;  // This would cause a compilation error
-
-    // volatile: value can change unexpectedly (e.g., hardware registers)
-    volatile int sensor_value;
-
-    // restrict: pointer is the only way to access the object it points to (C99+)
-    int * restrict ptr = (int *)malloc(sizeof(int));
-    *ptr = 10;
-    printf("Value pointed to by restrict pointer: %d\n", *ptr);
-    free(ptr);
-
-    // _Atomic: ensures atomic access in concurrent programming (C11+)
-    _Atomic int atomic_counter = 0;
-
-    printf("\n");
-}
-
-void operators_and_expressions() {
-    printf("5. Operators and Expressions\n");
-    printf("----------------------------\n");
-
-    int a = 10, b = 3;
-
-    // Arithmetic operators
-    printf("Arithmetic: %d + %d = %d, %d - %d = %d, %d * %d = %d, %d / %d = %d, %d %% %d = %d\n",
-           a, b, a + b, a, b, a - b, a, b, a * b, a, b, a / b, a, b, a % b);
-
-    // Relational operators
-    printf("Relational: %d > %d is %d, %d <= %d is %d\n",
-           a, b, a > b, a, b, a <= b);
-
-    // Logical operators
-    printf("Logical: (%d > 0) && (%d < 0) is %d\n", a, b, (a > 0) && (b < 0));
-
-    // Bitwise operators
-    printf("Bitwise: %d & %d = %d, %d | %d = %d, %d ^ %d = %d, ~%d = %d\n",
-           a, b, a & b, a, b, a | b, a, b, a ^ b, a, ~a);
-
-    // Shift operators
-    printf("Shift: %d << 1 = %d, %d >> 1 = %d\n", a, a << 1, a, a >> 1);
-
-    // Increment/Decrement
-    int c = a++;
-    int d = --b;
-    printf("Increment/Decrement: a++ results in c = %d, --b results in d = %d\n", c, d);
-
-    // Conditional operator
-    int max = (a > b) ? a : b;
-    printf("Conditional: max of %d and %d is %d\n", a, b, max);
-
-    printf("\n");
-}
-
-void type_conversion() {
-    printf("6. Type Conversion\n");
-    printf("------------------\n");
-
-    // Implicit conversion
-    int i = 10;
-    double d = i;  // int to double
-    printf("Implicit int to double: %d to %f\n", i, d);
-
-    // Explicit conversion (casting)
-    double pi = 3.14159;
-    int rounded = (int)pi;  // double to int
-    printf("Explicit double to int: %f to %d\n", pi, rounded);
-
-    // Potential loss of data
-    long long big_num = 1234567890123LL;
-    int truncated = (int)big_num;
-    printf("Potential data loss: %lld to %d\n", big_num, truncated);
-
-    // Unsigned to signed conversion
-    unsigned int u = 4294967295U;  // Maximum value for 32-bit unsigned int
-    int s = u;
-    printf("Unsigned to signed: %u to %d\n", u, s);
-
-    printf("\n");
-}
-
-void best_practices() {
-    printf("7. Best Practices\n");
-    printf("------------------\n");
-    printf("- Use meaningful variable names\n");
-    printf("- Initialize variables before use\n");
-    printf("- Use const for values that shouldn't change\n");
-    printf("- Be cautious with implicit type conversions\n");
-    printf("- Use appropriate data types for the task\n");
-    printf("- Avoid global variables when possible\n");
-    printf("- Use enums for related constants\n");
-    printf("- Be consistent with naming conventions\n");
-    printf("- Comment your code, especially for complex logic\n");
-    printf("- Use parentheses to clarify operator precedence\n");
-    printf("\n");
-}
-
-void common_pitfalls() {
-    printf("8. Common Pitfalls\n");
-    printf("------------------\n");
-    printf("- Integer division truncation\n");
-    printf("- Uninitialized variables\n");
-    printf("- Off-by-one errors in loops and arrays\n");
-    printf("- Confusing assignment (=) with equality comparison (==)\n");
-    printf("- Ignoring compiler warnings\n");
-    printf("- Buffer overflows\n");
-    printf("- Memory leaks\n");
-    printf("- Undefined behavior due to sequence points\n");
-    printf("- Assuming specific sizes for data types\n");
-    printf("- Failing to check for integer overflow\n");
-    printf("\n");
-}
-
-void advanced_tips() {
-    printf("9. Advanced Tips and Optimizations\n");
-    printf("----------------------------------\n");
-    printf("- Use bitfields for space-efficient structs\n");
-    printf("- Leverage compiler-specific attributes for optimization\n");
-    printf("- Use inline functions for performance-critical code\n");
-    printf("- Understand and utilize cache-friendly data structures\n");
-    printf("- Use function pointers for flexible designs\n");
-    printf("- Implement custom memory management for performance\n");
-    printf("- Utilize SIMD instructions for parallel data processing\n");
-    printf("- Use volatile for memory-mapped I/O\n");
-    printf("- Understand and leverage undefined behavior for optimization\n");
-    printf("- Use flexible array members for variable-length structures\n");
-    printf("\n");
-
-    // Example of bitfields
-    struct Flags {
-        unsigned int flag1 : 1;
-        unsigned int flag2 : 1;
-        unsigned int flag3 : 1;
-    } flags = {1, 0, 1};
-
-    printf("Bitfields example: %zu bytes\n", sizeof(flags));
-
-    // Example of inline function
-    inline int max(int a, int b) {
-        return (a > b) ? a : b;
-    }
-    printf("Inline function result: %d\n", max(10, 20));
-
-    printf("\n");
-}
-
-void real_world_use_cases() {
-    printf("10. Real-world Use Cases\n");
-    printf("------------------------\n");
-    printf("- Embedded systems programming\n");
-    printf("- Operating system kernels\n");
-    printf("- Device drivers\n");
-    printf("- Game development (especially game engines)\n");
-    printf("- High-performance computing and scientific simulations\n");
-    printf("- Database management systems\n");
-    printf("- Compiler design\n");
-    printf("- Network protocol implementations\n");
-    printf("- Signal processing and real-time systems\n");
-    printf("- Cryptography and security software\n");
-    printf("\n");
-
-    // Example: Simple data structure for a linked list node
-    struct Node {
-        int data;
-        struct Node* next;
-    };
-
-    // Create a simple linked list
-    struct Node* head = malloc(sizeof(struct Node));
-    head->data = 1;
-    head->next = malloc(sizeof(struct Node));
-    head->next->data = 2;
-    head->next->next = NULL;
-
-    printf("Linked list example: %d -> %d -> NULL\n", head->data, head->next->data);
-
-    // Clean up
-    free(head->next);
-    free(head);
-
-    printf("\n");
-}
-
-void integration_with_other_concepts() {
-    printf("11. Integration with Other Concepts\n");
-    printf("-----------------------------------\n");
-    printf("- Memory management and dynamic allocation\n");
-    printf("- Pointers and data structures\n");
-    printf("- File I/O and system calls\n");
-    printf("- Multithreading and concurrency\n");
-    printf("- Networking and socket programming\n");
-    printf("- Interfacing with assembly language\n");
-    printf("- Integration with other languages (e.g., C++, Python via extensions)\n");
-    printf("- Low-level hardware manipulation\n");
-    printf("- Signal handling and process control\n");
-    printf("- Cross-platform development considerations\n");
-    printf("\n");
-}
-
-void faqs_and_troubleshooting() {
-    printf("12. FAQs and Troubleshooting\n");
-    printf("----------------------------\n");
-    printf("Q: What's the difference between 'int' and 'long'?\n");
-    printf("A: The size of 'int' and 'long' can vary by platform. Use <stdint.h> for fixed-size integers.\n\n");
-
-    printf("Q: How do I properly use 'const' with pointers?\n");
-    printf("A: 'const int *p' means the int is const, 'int * const p' means the pointer is const.\n\n");
-
-    printf("Q: Why am I getting 'segmentation fault'?\n");
-    printf("A: Common causes include dereferencing NULL pointers, buffer overflows, or stack overflow.\n\n");
-
-    printf("Q: How can I check for integer overflow?\n");
-    printf("A: Use library functions like 'sadd_overflow' from <stdckdint.h> (C23) or implement custom checks.\n\n");
-
-    printf
