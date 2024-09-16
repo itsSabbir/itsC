@@ -20,7 +20,7 @@ void faqs_and_troubleshooting(void);
 void recommended_tools_and_libraries(void);
 
 int main() {
-    printf("Expert-level Cheat Sheet: Control Structures (switch-case) in C\n\n");
+    printf("Cheat Sheet: Control Structures (switch-case) in C\n\n");
 
     overview_and_syntax();
     basic_switch_case();
