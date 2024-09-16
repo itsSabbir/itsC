@@ -22,7 +22,7 @@ void faqs_and_troubleshooting(void);
 void recommended_tools_and_libraries(void);
 
 int main() {
-    printf("Expert-level Cheat Sheet: Control Structures (Loops) in C\n\n");
+    printf(" Cheat Sheet: Control Structures (Loops) in C\n\n");
 
     overview_and_syntax();
     for_loop_basics();
